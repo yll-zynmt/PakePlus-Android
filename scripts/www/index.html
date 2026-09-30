@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f7fb" />
+  <title>比一比 · 单位价格计算器</title>
+  <style>
+    :root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#182230;background:#f5f7fb;font-synthesis:none;font-optical-sizing:auto}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#dce9ff 0,transparent 48%),#f5f7fb}
+    button,input,select{font:inherit}button{cursor:pointer}.app{max-width:440px;margin:0 auto;padding:20px 18px 38px;min-height:100vh}
+    .top{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 23px}.brand{display:flex;align-items:center;gap:10px;font-weight:750;font-size:18px;letter-spacing:-.4px}.logo{width:36px;height:36px;border-radius:13px;background:#3169e8;color:#fff;display:grid;place-items:center;box-shadow:0 5px 12px #3169e83a}.logo svg{width:20px}.top-note{color:#8792a4;font-size:12px}
+    h1{font-size:27px;line-height:1.22;letter-spacing:-.8px;margin:0 0 8px;font-weight:780}.subtitle{margin:0;color:#7a8799;font-size:14px;line-height:1.55}.intro{margin-bottom:22px}
+    .card{background:#fff;border:1px solid #e9edf4;border-radius:20px;padding:17px;box-shadow:0 8px 28px #26385908}.label{font-size:12px;font-weight:700;color:#8591a3;letter-spacing:.2px;margin-bottom:9px;display:block}.product-head{display:flex;gap:12px;align-items:end}.product-field{flex:1}.input{height:46px;border:1px solid #e3e8f0;border-radius:12px;background:#fbfcfe;padding:0 13px;color:#243044;outline:none;width:100%;transition:.18s}.input:focus{border-color:#79a0ff;box-shadow:0 0 0 3px #3169e816;background:#fff}.unit-select{width:95px;height:46px;border:1px solid #e3e8f0;border-radius:12px;background:#fbfcfe;padding:0 10px;color:#344258;outline:none}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:23px 2px 11px}.section-title strong{font-size:15px}.section-title span{font-size:12px;color:#98a2b1}
+    .option-list{display:flex;flex-direction:column;gap:10px}.option{padding:14px;border:1px solid #e8edf4;border-radius:16px;background:#fff;box-shadow:0 4px 12px #26385905;animation:appear .2s ease}.option-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}.option-name{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}.badge{width:25px;height:25px;background:#eef3ff;color:#3569d8;border-radius:9px;display:grid;place-items:center;font-size:12px;font-weight:800}.delete{border:0;background:#f5f6f8;color:#9aa4b2;width:29px;height:29px;border-radius:9px;font-size:18px;line-height:1}.delete:hover{background:#fff0ef;color:#dc615b}.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:#8a96a7;font-size:11px;margin-bottom:6px}.field .input{height:43px;font-size:15px;font-weight:600;background:#fafbfd}.suffix{position:relative}.suffix .input{padding-right:36px}.suffix i{position:absolute;right:12px;top:13px;font-style:normal;color:#9aa4b2;font-size:12px;pointer-events:none}
+    .add{margin-top:12px;width:100%;height:46px;border:1px dashed #b8c9ee;color:#3569d8;background:#f7f9ff;border-radius:14px;font-size:14px;font-weight:700;transition:.15s}.add:hover{background:#edf3ff;border-color:#7ca0eb}.add b{font-size:19px;vertical-align:-1px;margin-right:5px;font-weight:500}
+    .result{margin-top:22px;overflow:hidden;padding:0}.result-head{padding:17px 17px 13px;display:flex;align-items:center;justify-content:space-between}.result-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:750}.spark{width:29px;height:29px;border-radius:10px;background:#e8f7ef;color:#19945b;display:grid;place-items:center;font-size:16px}.live{display:flex;align-items:center;gap:5px;color:#22a16a;font-size:11px;font-weight:650}.live:before{content:"";width:6px;height:6px;background:#36b77c;border-radius:99px;box-shadow:0 0 0 3px #36b77c1b}
+    .winner{margin:0 12px 12px;padding:14px;border-radius:15px;background:linear-gradient(120deg,#edf9f2,#f1fbf6);border:1px solid #d8f1e3;display:flex;align-items:center;justify-content:space-between}.winner-label{color:#32845c;font-size:11px;margin-bottom:4px;font-weight:650}.winner-name{font-size:15px;font-weight:750;color:#205f42}.winner-value{text-align:right}.winner-value strong{font-size:21px;letter-spacing:-.5px;color:#168455}.winner-value small{display:block;color:#65a384;font-size:10px;margin-top:1px}
+    .rank-list{padding:0 12px 12px}.rank-row{display:flex;align-items:center;gap:11px;padding:11px 7px;border-top:1px solid #f0f2f5}.rank-no{width:24px;height:24px;border-radius:8px;background:#f2f4f7;color:#8b96a5;display:grid;place-items:center;font-size:11px;font-weight:750}.rank-row.best .rank-no{background:#dff3e8;color:#168455}.rank-copy{flex:1;min-width:0}.rank-label{font-size:13px;font-weight:650;color:#3a4658}.rank-desc{font-size:11px;color:#a0a9b5;margin-top:3px}.rank-price{text-align:right;font-size:14px;font-weight:750;color:#566276}.rank-price small{font-size:10px;font-weight:500;color:#9ba5b1}.empty{margin:0 12px 14px;text-align:center;padding:19px 10px;border:1px dashed #e4e9f0;border-radius:13px;color:#9aa4b2;font-size:12px;line-height:1.6}.hint{margin:12px 4px 0;font-size:11px;line-height:1.55;color:#98a2b1}.foot{margin-top:24px;text-align:center;color:#b0b7c2;font-size:11px}
+    @keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .screen{display:none;padding-bottom:84px}.screen.active{display:block}.app{padding-bottom:104px}.bottom-nav{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,440px);padding:9px 24px calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,1fr);background:#ffffffed;border-top:1px solid #e9edf4;backdrop-filter:blur(16px)}.nav-button{border:0;background:none;color:#9aa4b2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;padding:3px}.nav-button.active{color:#3569d8;font-weight:700}.nav-icon{font-size:20px;line-height:22px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}.section-head strong{font-size:15px}.section-head small{color:#98a2b1;font-size:11px}.url-tools{display:flex;gap:9px;margin-bottom:17px}.search{flex:1;height:44px;border:1px solid #e3e8f0;border-radius:13px;background:#ffffff;padding:0 13px;outline:none;min-width:0}.search:focus,.tag-entry input:focus{border-color:#79a0ff}.primary{border:0;background:#3169e8;color:#fff;border-radius:13px;padding:0 14px;font-size:13px;font-weight:700;box-shadow:0 5px 12px #3169e82b}.tag-panel{padding:15px 15px 13px}.tag-heading{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:750;margin-bottom:11px}.tag-heading span{font-size:11px;color:#9aa4b2;font-weight:500}.tag-cloud{display:flex;flex-wrap:wrap;gap:8px}.tag-chip{border:1px solid #e6ebf2;background:#f8f9fb;color:#657286;padding:7px 11px;border-radius:99px;font-size:12px;line-height:1;transition:.15s}.tag-chip.selected{border-color:#a9c2ff;background:#edf3ff;color:#3169d8;font-weight:700}.tag-chip .tag-count{font-size:10px;color:#a2acb8;margin-left:3px}.tag-chip.selected .tag-count{color:#7195e7}.tag-clear{border:0;background:none;color:#7e8ba0;font-size:11px;padding:4px}.active-filters{display:flex;align-items:center;gap:6px;margin:10px 2px 0;font-size:11px;color:#8a96a7;flex-wrap:wrap}.active-filters .mini-tag{background:#eaf1ff;color:#3569d8;padding:4px 8px;border-radius:99px}.url-list{display:flex;flex-direction:column;gap:10px}.url-card{padding:14px;background:#fff;border:1px solid #e9edf4;border-radius:16px;box-shadow:0 5px 16px #26385906}.url-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.url-name{font-size:14px;font-weight:750;color:#2d394b;overflow-wrap:anywhere}.url-link{display:block;color:#8290a3;text-decoration:none;font-size:11px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.url-link:hover{color:#3169e8}.url-card .tag-cloud{margin-top:12px;gap:6px}.url-card .tag-chip{padding:6px 9px;font-size:10px;cursor:pointer}.url-delete{border:0;background:#f5f6f8;color:#9aa4b2;width:27px;height:27px;border-radius:9px;font-size:17px;flex:0 0 auto}.url-delete:hover{background:#fff0ef;color:#dc615b}.url-empty{background:#fff;border:1px dashed #e2e8f0;border-radius:15px;color:#9aa4b2;text-align:center;font-size:12px;padding:23px 12px;line-height:1.7}.url-count{color:#9aa4b2;font-size:11px;margin:12px 3px}.form-card{padding:17px;margin-bottom:12px}.form-field{margin-bottom:13px}.form-field:last-child{margin-bottom:0}.form-field label{display:block;font-size:12px;font-weight:700;color:#8591a3;margin-bottom:7px}.form-field input{width:100%;height:43px;border:1px solid #e3e8f0;border-radius:11px;background:#fbfcfe;padding:0 12px;outline:none;font-size:13px}.tag-entry{min-height:44px;border:1px solid #e3e8f0;border-radius:12px;background:#fbfcfe;padding:6px 8px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}.tag-entry input{border:0;outline:none;background:transparent;flex:1;min-width:100px;height:29px;padding:0 4px;font-size:12px}.tag-entry .tag-chip{padding:6px 8px}.form-help{font-size:10px;color:#a0a9b5;margin-top:6px}.form-actions{display:flex;gap:9px}.form-actions button{height:45px;flex:1}.secondary{border:1px solid #e3e8f0;background:#fff;color:#738096;border-radius:13px;font-size:13px;font-weight:700}.new-tag{background:#edf3ff;color:#3569d8}.settings-card{padding:16px;margin-bottom:12px}.settings-title{font-size:14px;font-weight:750;margin-bottom:6px}.settings-copy{font-size:11px;color:#8b97a8;line-height:1.6;margin-bottom:13px}.settings-actions{display:flex;gap:9px}.settings-actions button{height:42px;flex:1}.settings-status{font-size:11px;color:#8290a3;margin-top:10px;line-height:1.5}.settings-icon{width:38px;height:38px;border-radius:12px;background:#edf3ff;color:#3569d8;display:grid;place-items:center;font-size:18px;margin-bottom:12px}.@media(min-width:600px){body{padding:24px 0}.app{min-height:calc(100vh - 48px);border-radius:28px;background:#f7f9fc;box-shadow:0 16px 55px #1c2d4d12;padding:24px 22px 104px}.bottom-nav{bottom:24px;border-radius:0 0 28px 28px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand"><span class="logo"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7.5h14M5 12h9M5 16.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg></span>比一比</div>
+      <span class="top-note">单位价格计算器</span>
+    </header>
+    <section id="compare-screen" class="screen active">
+    <section class="intro"><h1>哪种买法更划算？</h1><p class="subtitle">输入每个方案的数量和价格，马上看出谁的单价更低。</p></section>
+
+    <section class="card">
+      <div class="product-head">
+        <div class="product-field"><label class="label" for="product">商品名称</label><input id="product" class="input" value="商品 A" placeholder="例如：洗发水" /></div>
+        <div><label class="label" for="unit">计量单位</label><select id="unit" class="unit-select"><option>g</option><option>kg</option><option>件</option><option>包</option><option>ml</option><option>片</option><option>个</option><option>其他</option></select></div>
+      </div>
+    </section>
+
+    <div class="section-title"><strong>比较方案</strong><span>单价越低，性价比越高</span></div>
+    <section id="options" class="option-list" aria-label="比较方案"></section>
+    <button class="add" id="add"><b>＋</b>添加一个方案</button>
+
+    <section class="card result" aria-live="polite">
+      <div class="result-head"><div class="result-title"><span class="spark">↗</span>性价比排行</div><span class="live">实时计算</span></div>
+      <div id="winner"></div><div id="ranking" class="rank-list"></div>
+    </section>
+    <p class="hint">按「价格 ÷ 数量」计算单价。比较同一商品时，请使用相同计量单位。</p>
+    <footer class="foot">简单输入，轻松买得值</footer>
+    </section>
+
+    <section id="links-screen" class="screen">
+      <section class="intro"><h1>网址收藏</h1><p class="subtitle">把常用网页收好，用标签快速找到它们。</p></section>
+      <div class="url-tools"><input id="url-search" class="search" placeholder="搜索名称或网址" aria-label="搜索网址"><button id="new-link" class="primary" type="button">＋ 添加网址</button></div>
+      <section id="link-form" class="card form-card" hidden>
+        <div class="section-head" style="margin:0 0 13px"><strong>添加一个网址</strong><small>名称 · URL · 标签</small></div>
+        <div class="form-field"><label for="link-name">网址名称</label><input id="link-name" placeholder="例如：常逛的购物网站" maxlength="60"></div>
+        <div class="form-field"><label for="link-url">网址 URL</label><input id="link-url" inputmode="url" placeholder="https://example.com" maxlength="500"></div>
+        <div class="form-field"><label for="tag-input">标签</label><div id="tag-entry" class="tag-entry"><input id="tag-input" placeholder="输入标签后按回车"></div><div class="form-help">可添加多个标签；按回车或逗号确认</div></div>
+        <div class="form-actions"><button id="cancel-link" type="button" class="secondary">取消</button><button id="save-link" type="button" class="primary">保存网址</button></div>
+      </section>
+      <div class="section-head"><strong>按标签筛选</strong><small>支持同时选择多个</small></div>
+      <section class="card tag-panel"><div class="tag-heading">全部标签 <button id="clear-filters" class="tag-clear" type="button">清除筛选</button></div><div id="tag-cloud" class="tag-cloud"></div><div id="active-filters" class="active-filters"></div></section>
+      <div class="section-head"><strong>全部网址</strong><small id="link-total"></small></div>
+      <section id="url-list" class="url-list"></section>
+      <p class="hint">点选上方标签筛选网址；再次点击已选标签即可取消。多标签同时选中时，显示同时含有这些标签的网址。</p>
+    </section>
+
+    <section id="settings-screen" class="screen">
+      <section class="intro"><h1>设置</h1><p class="subtitle">管理本机数据，或创建一份备份带到新设备。</p></section>
+      <section class="card settings-card"><div class="settings-icon">⇧</div><div class="settings-title">导出网址数据</div><div class="settings-copy">将网址名称、URL、标签和创建时间保存为 JSON 备份文件。请将文件存放在你容易找到的位置。</div><div class="settings-actions"><button id="export-data" class="primary" type="button">导出备份文件</button></div><div id="export-status" class="settings-status">当前保存 <strong id="saved-count">0</strong> 条网址</div></section>
+      <section class="card settings-card"><div class="settings-icon">⇩</div><div class="settings-title">导入备份数据</div><div class="settings-copy">选择之前导出的 JSON 文件，导入后会替换本机当前的网址数据。建议导入前先导出一份备份。</div><div class="settings-actions"><button id="choose-import" class="secondary" type="button">选择备份文件</button><input id="import-file" type="file" accept=".json,application/json" hidden></div><div id="import-status" class="settings-status">支持本 App 导出的 JSON 备份</div></section>
+      <section class="card settings-card"><div class="settings-title">数据保存位置</div><div class="settings-copy" style="margin-bottom:0">网址数据保存在此 App 的本机存储中。卸载 App 或清除 App 数据会移除本机记录；可通过备份文件恢复。</div></section>
+    </section>
+  </main>
+  <nav class="bottom-nav" aria-label="主菜单"><button class="nav-button active" data-screen="compare-screen"><span class="nav-icon">◉</span>价格比较</button><button class="nav-button" data-screen="links-screen"><span class="nav-icon">▤</span>网址收藏</button><button class="nav-button" data-screen="settings-screen"><span class="nav-icon">⚙</span>设置</button></nav>
+  <script>
+    const optionsEl=document.querySelector('#options');
+    const unitEl=document.querySelector('#unit');
+    let nextId=3;
+    const initial=[{id:1,quantity:'88',price:'300'},{id:2,quantity:'100',price:'360'}];
+    function optionMarkup(item){return `<article class="option" data-id="${item.id}"><div class="option-top"><div class="option-name"><span class="badge">${item.id}</span>方案 ${item.id}</div>${item.id>2?`<button class="delete" type="button" aria-label="删除方案 ${item.id}" title="删除方案">×</button>`:''}</div><div class="fields"><div class="field"><label>数量</label><div class="suffix"><input class="input quantity" type="number" min="0" step="any" inputmode="decimal" placeholder="输入数量" value="${item.quantity||''}" aria-label="方案 ${item.id} 数量"><i class="unit-text">${unitEl.value}</i></div></div><div class="field"><label>价格</label><div class="suffix"><input class="input price" type="number" min="0" step="any" inputmode="decimal" placeholder="输入金额" value="${item.price||''}" aria-label="方案 ${item.id} 价格"><i>元</i></div></div></div></article>`}
+    function addOption(item){optionsEl.insertAdjacentHTML('beforeend',optionMarkup(item));render();}
+    function render(){
+      document.querySelectorAll('.unit-text').forEach(el=>el.textContent=unitEl.value);
+      const valid=[...document.querySelectorAll('.option')].map(card=>({id:Number(card.dataset.id),quantity:Number(card.querySelector('.quantity').value),price:Number(card.querySelector('.price').value)})).filter(x=>x.quantity>0&&x.price>0&&Number.isFinite(x.quantity)&&Number.isFinite(x.price)).map(x=>({...x,rate:x.price/x.quantity})).sort((a,b)=>a.rate-b.rate);
+      const winner=document.querySelector('#winner'),ranking=document.querySelector('#ranking');
+      if(!valid.length){winner.innerHTML='';ranking.innerHTML='<div class="empty">填写至少一个方案的数量和价格<br>这里会自动显示性价比排行</div>';return}
+      const best=valid[0],name=document.querySelector('#product').value.trim()||'商品';
+      winner.innerHTML=`<div class="winner"><div><div class="winner-label">最划算的选择</div><div class="winner-name">${escapeHTML(name)} · 方案 ${best.id}</div></div><div class="winner-value"><strong>${format(best.rate)}</strong><small>元 / ${unitEl.value}</small></div></div>`;
+      ranking.innerHTML=valid.map((x,i)=>`<div class="rank-row ${i===0?'best':''}"><span class="rank-no">${i+1}</span><div class="rank-copy"><div class="rank-label">方案 ${x.id}</div><div class="rank-desc">${format(x.quantity)} ${unitEl.value} · ${format(x.price)} 元</div></div><div class="rank-price">${format(x.rate)} <small>元/${unitEl.value}</small></div></div>`).join('');
+    }
+    function format(n){return new Intl.NumberFormat('zh-CN',{maximumFractionDigits:2}).format(n)}
+    function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    initial.forEach(item=>optionsEl.insertAdjacentHTML('beforeend',optionMarkup(item)));
+    document.querySelector('#add').addEventListener('click',()=>{addOption({id:nextId++,quantity:'',price:''})});
+    optionsEl.addEventListener('input',render);
+    optionsEl.addEventListener('click',e=>{const btn=e.target.closest('.delete');if(btn){btn.closest('.option').remove();render()}});
+    unitEl.addEventListener('change',render);document.querySelector('#product').addEventListener('input',render);render();
+
+    const storageKey='biji.urls.v1';
+    const sampleLinks=[
+      {id:1,name:'淘宝 · 购物首页',url:'https://www.taobao.com',tags:['购物','日常']},
+      {id:2,name:'京东 · 电子产品',url:'https://www.jd.com',tags:['购物','数码']},
+      {id:3,name:'什么值得买',url:'https://www.smzdm.com',tags:['购物','优惠','数码']},
+      {id:4,name:'少数派 · 效率工具',url:'https://sspai.com',tags:['阅读','工具']}
+    ];
+    function loadLinks(){try{const saved=localStorage.getItem(storageKey);if(saved!==null){const parsed=JSON.parse(saved);if(Array.isArray(parsed))return parsed}}catch(e){console.warn('本机网址数据读取失败',e)}return sampleLinks}
+    const linkData=loadLinks();
+    let selectedTags=new Set(),draftTags=new Set(),linkId=5;
+    const linkList=document.querySelector('#url-list'),tagCloud=document.querySelector('#tag-cloud'),form=document.querySelector('#link-form');
+    function saveLinks(){try{localStorage.setItem(storageKey,JSON.stringify(linkData));document.querySelector('#saved-count').textContent=linkData.length}catch(e){document.querySelector('#export-status').textContent='本机存储不可用，请尽快导出备份';console.warn('本机网址数据保存失败',e)}}
+    function linkRender(){
+      const allTags=[...new Set(linkData.flatMap(x=>x.tags))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
+      tagCloud.innerHTML=allTags.length?allTags.map(tag=>{const count=linkData.filter(x=>x.tags.includes(tag)).length;return `<button type="button" class="tag-chip ${selectedTags.has(tag)?'selected':''}" data-filter="${escapeHTML(tag)}">${escapeHTML(tag)} <span class="tag-count">${count}</span></button>`}).join(''):'<span style="font-size:11px;color:#a0a9b5">添加网址后，标签会显示在这里</span>';
+      const query=document.querySelector('#url-search').value.trim().toLocaleLowerCase();
+      const shown=linkData.filter(x=>(!selectedTags.size||[...selectedTags].every(t=>x.tags.includes(t)))&&(!query||`${x.name} ${x.url}`.toLocaleLowerCase().includes(query)));
+      document.querySelector('#link-total').textContent=`${shown.length} / ${linkData.length} 个`;
+      document.querySelector('#active-filters').innerHTML=selectedTags.size?`已选：${[...selectedTags].map(t=>`<span class="mini-tag">${escapeHTML(t)}</span>`).join('')}`:'未筛选 · 显示全部';
+      linkList.innerHTML=shown.length?shown.map(x=>`<article class="url-card"><div class="url-card-top"><div style="min-width:0;flex:1"><div class="url-name">${escapeHTML(x.name)}</div><a class="url-link" href="${escapeHTML(x.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(x.url)}</a></div><button type="button" class="url-delete" data-delete="${x.id}" aria-label="删除${escapeHTML(x.name)}">×</button></div><div class="tag-cloud">${x.tags.map(t=>`<button type="button" class="tag-chip ${selectedTags.has(t)?'selected':''}" data-filter="${escapeHTML(t)}">${escapeHTML(t)}</button>`).join('')}</div></article>`).join(''):'<div class="url-empty">没有找到符合条件的网址<br>试试取消部分标签筛选，或添加一个新网址</div>';
+      renderDraftTags();document.querySelector('#saved-count').textContent=linkData.length;
+    }
+    function renderDraftTags(){const entry=document.querySelector('#tag-entry'),input=document.querySelector('#tag-input');entry.querySelectorAll('.tag-chip').forEach(e=>e.remove());[...draftTags].forEach(tag=>{const chip=document.createElement('button');chip.type='button';chip.className='tag-chip new-tag';chip.textContent=tag+' ×';chip.title='移除标签';chip.addEventListener('click',()=>{draftTags.delete(tag);renderDraftTags()});entry.insertBefore(chip,input)})}
+    function addDraftTag(raw){const tag=raw.trim().replace(/^[#，,\s]+|[，,\s]+$/g,'');if(tag&&!draftTags.has(tag))draftTags.add(tag);document.querySelector('#tag-input').value='';renderDraftTags()}
+    document.querySelectorAll('.nav-button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav-button').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===btn.dataset.screen));document.querySelector('.top-note').textContent=btn.dataset.screen==='links-screen'?'网址收藏':'单位价格计算器';window.scrollTo({top:0,behavior:'smooth'})}));
+    document.querySelector('#new-link').addEventListener('click',()=>{form.hidden=!form.hidden;if(!form.hidden){document.querySelector('#link-name').focus();form.scrollIntoView({behavior:'smooth',block:'nearest'})}});
+    document.querySelector('#cancel-link').addEventListener('click',()=>{form.hidden=true;document.querySelector('#link-name').value='';document.querySelector('#link-url').value='';draftTags.clear();linkRender()});
+    document.querySelector('#tag-input').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','||e.key==='，'){e.preventDefault();addDraftTag(e.target.value)}});
+    document.querySelector('#tag-input').addEventListener('input',e=>{if(/[，,]/.test(e.target.value)){const chunks=e.target.value.split(/[，,]/);chunks.slice(0,-1).forEach(addDraftTag);e.target.value=chunks.at(-1)}});
+    document.querySelector('#tag-entry').addEventListener('click',e=>{if(e.target.id!=='tag-input')document.querySelector('#tag-input').focus()});
+    document.querySelector('#save-link').addEventListener('click',()=>{const name=document.querySelector('#link-name').value.trim(),rawUrl=document.querySelector('#link-url').value.trim();if(!name||!rawUrl){alert('请填写网址名称和 URL');return}let url;try{url=new URL(/^https?:\/\//i.test(rawUrl)?rawUrl:`https://${rawUrl}`);if(!['http:','https:'].includes(url.protocol))throw new Error()}catch{alert('请输入有效的网址');return}addDraftTag(document.querySelector('#tag-input').value);linkData.unshift({id:linkId++,name,url:url.href,tags:[...draftTags],createdAt:new Date().toISOString()});saveLinks();selectedTags.clear();form.hidden=true;document.querySelector('#link-name').value='';document.querySelector('#link-url').value='';draftTags.clear();linkRender()});
+    tagCloud.addEventListener('click',e=>{const btn=e.target.closest('[data-filter]');if(btn){const tag=btn.dataset.filter;selectedTags.has(tag)?selectedTags.delete(tag):selectedTags.add(tag);linkRender()}});
+    linkList.addEventListener('click',e=>{const del=e.target.closest('[data-delete]');if(del){const i=linkData.findIndex(x=>x.id===Number(del.dataset.delete));if(i>=0)linkData.splice(i,1);saveLinks();linkRender();return}const chip=e.target.closest('[data-filter]');if(chip){const tag=chip.dataset.filter;selectedTags.has(tag)?selectedTags.delete(tag):selectedTags.add(tag);linkRender()}});
+    document.querySelector('#url-search').addEventListener('input',linkRender);document.querySelector('#clear-filters').addEventListener('click',()=>{selectedTags.clear();linkRender()});linkRender();
+    saveLinks();
+    document.querySelectorAll('.nav-button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelector('.top-note').textContent=btn.dataset.screen==='compare-screen'?'单位价格计算器':btn.dataset.screen==='links-screen'?'网址收藏':'数据与备份'}));
+    document.querySelector('#export-data').addEventListener('click',()=>{const backup={app:'比一比',formatVersion:1,exportedAt:new Date().toISOString(),urls:linkData};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`biji-urls-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);document.querySelector('#export-status').textContent=`已导出 ${linkData.length} 条网址。若在安卓 WebView 内使用，正式 APK 需要接入系统文件保存选择器。`});
+    document.querySelector('#choose-import').addEventListener('click',()=>document.querySelector('#import-file').click());
+    document.querySelector('#import-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const parsed=JSON.parse(await file.text());const records=Array.isArray(parsed)?parsed:parsed.urls;if(!Array.isArray(records))throw new Error('文件中没有网址列表');const cleaned=records.map(x=>{if(!x||typeof x.name!=='string'||typeof x.url!=='string'||!Array.isArray(x.tags))throw new Error('网址记录格式不正确');const u=new URL(x.url);if(!['http:','https:'].includes(u.protocol))throw new Error('网址必须以 http 或 https 开头');return{id:linkId++,name:x.name.slice(0,120),url:u.href,tags:[...new Set(x.tags.filter(t=>typeof t==='string').map(t=>t.trim()).filter(Boolean))],createdAt:typeof x.createdAt==='string'?x.createdAt:new Date().toISOString()}});if(!confirm(`将用备份中的 ${cleaned.length} 条网址替换本机当前的 ${linkData.length} 条数据，是否继续？`))return;linkData.splice(0,linkData.length,...cleaned);saveLinks();selectedTags.clear();linkRender();document.querySelector('#import-status').textContent=`导入完成：已保存 ${cleaned.length} 条网址。`}catch(err){document.querySelector('#import-status').textContent=`导入失败：${err.message||'无法读取文件'}`}finally{e.target.value=''}});
+  </script>
+</body>
+</html>
